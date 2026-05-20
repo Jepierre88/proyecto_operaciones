@@ -12,6 +12,7 @@ from src.application.use_cases.load_problem_from_file import LoadProblemFromFile
 from src.application.use_cases.load_sample_problem import LoadSampleProblemUseCase
 from src.application.use_cases.solve_lp_problem import SolveLPProblemUseCase, SolveResult
 from src.infrastructure.persistence.json_problem_loader import JsonProblemLoader
+from src.infrastructure.persistence.xlsx_problem_loader import XlsxProblemLoader
 from src.infrastructure.plotting.feasible_region_plotter import (
     MatplotlibFeasibleRegionPlotter,
 )
@@ -26,6 +27,7 @@ class MainController:
         export_uc: ExportResultsUseCase,
         plotter: MatplotlibFeasibleRegionPlotter,
         json_loader: JsonProblemLoader,
+        xlsx_loader: XlsxProblemLoader,
     ) -> None:
         self._solve = solve_uc
         self._load_file = load_file_uc
@@ -33,6 +35,7 @@ class MainController:
         self._export = export_uc
         self._plotter = plotter
         self._json_loader = json_loader
+        self._xlsx_loader = xlsx_loader
         self._last_result: SolveResult | None = None
         self._view = None  # se inyecta despues
 
@@ -71,7 +74,12 @@ class MainController:
     def on_load_file(self) -> None:
         path = filedialog.askopenfilename(
             title="Cargar problema",
-            filetypes=[("JSON", "*.json"), ("CSV", "*.csv"), ("Todos", "*.*")],
+            filetypes=[
+                ("Excel", "*.xlsx"),
+                ("JSON", "*.json"),
+                ("CSV", "*.csv"),
+                ("Todos", "*.*"),
+            ],
         )
         if not path:
             return
@@ -91,6 +99,30 @@ class MainController:
             return
         self._view.apply_problem_request(request)
         self._view.status_bar.info(f"Caso precargado: {request.name}")
+
+    def on_download_excel_template(self) -> None:
+        path = filedialog.asksaveasfilename(
+            title="Descargar plantilla Excel",
+            defaultextension=".xlsx",
+            initialfile="plantilla_problema.xlsx",
+            filetypes=[("Excel", "*.xlsx")],
+        )
+        if not path:
+            return
+        try:
+            self._xlsx_loader.save_template(Path(path), with_example=True)
+        except Exception as exc:
+            messagebox.showerror("No se pudo generar la plantilla", str(exc))
+            return
+        messagebox.showinfo(
+            "Plantilla generada",
+            (
+                f"Se creo el archivo:\n{path}\n\n"
+                "Abrelo en Excel, completa los datos en la hoja 'Problema' y "
+                "cargalo desde 'Archivo > Cargar problema...'."
+            ),
+        )
+        self._view.status_bar.info(f"Plantilla guardada en {Path(path).name}.")
 
     def on_save_problem(self) -> None:
         try:

@@ -1,49 +1,40 @@
-"""Contenedor dinamico de filas de restricciones con boton 'Agregar' y scroll."""
+"""Contenedor dinamico de filas de restricciones con scroll (CustomTkinter)."""
 
 from __future__ import annotations
 
-import tkinter as tk
-from tkinter import ttk
+import customtkinter as ctk
 
 from src.application.dto.problem_request import ConstraintRequest
 from src.presentation.widgets.constraint_row import ConstraintRow
 
 
-class ConstraintsList(ttk.LabelFrame):
-    def __init__(self, master: tk.Misc) -> None:
-        super().__init__(master, text="Restricciones", padding=10)
+class ConstraintsList(ctk.CTkFrame):
+    def __init__(self, master) -> None:
+        super().__init__(master, corner_radius=10)
         self._rows: list[ConstraintRow] = []
         self._build()
 
     def _build(self) -> None:
-        # Scroll vertical para muchas restricciones
-        outer = ttk.Frame(self)
-        outer.pack(fill="both", expand=True)
+        ctk.CTkLabel(
+            self, text="Restricciones", font=ctk.CTkFont(size=14, weight="bold")
+        ).pack(anchor="w", padx=14, pady=(12, 8))
 
-        self._canvas = tk.Canvas(outer, highlightthickness=0, height=180)
-        scrollbar = ttk.Scrollbar(outer, orient="vertical", command=self._canvas.yview)
-        self._canvas.configure(yscrollcommand=scrollbar.set)
+        self._scroll = ctk.CTkScrollableFrame(self, fg_color="transparent", height=180)
+        self._scroll.pack(fill="both", expand=True, padx=10, pady=(0, 8))
 
-        self._inner = ttk.Frame(self._canvas)
-        self._inner.bind(
-            "<Configure>",
-            lambda _e: self._canvas.configure(scrollregion=self._canvas.bbox("all")),
-        )
-        self._canvas.create_window((0, 0), window=self._inner, anchor="nw")
-
-        self._canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
-
-        ttk.Button(self, text="+ Agregar restriccion", command=self._add_empty).pack(
-            anchor="w", pady=(8, 0)
-        )
+        ctk.CTkButton(
+            self,
+            text="+ Agregar restriccion",
+            command=self._add_empty,
+            anchor="w",
+        ).pack(fill="x", padx=14, pady=(0, 12))
 
     def _add_empty(self) -> None:
         self.add_row()
 
     def add_row(self, a1: float = 0, a2: float = 0, op: str = "<=", b: float = 0) -> None:
-        row = ConstraintRow(self._inner, on_delete=self._remove_row, a1=a1, a2=a2, op=op, b=b)
-        row.pack(fill="x", pady=2)
+        row = ConstraintRow(self._scroll, on_delete=self._remove_row, a1=a1, a2=a2, op=op, b=b)
+        row.pack(fill="x", pady=4, padx=2)
         self._rows.append(row)
 
     def _remove_row(self, row: ConstraintRow) -> None:

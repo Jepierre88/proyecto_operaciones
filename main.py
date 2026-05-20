@@ -6,6 +6,8 @@ Es el unico archivo que conoce todas las capas a la vez.
 
 from __future__ import annotations
 
+import customtkinter as ctk
+
 from src.application.use_cases.export_results import ExportResultsUseCase
 from src.application.use_cases.load_problem_from_file import LoadProblemFromFileUseCase
 from src.application.use_cases.load_sample_problem import LoadSampleProblemUseCase
@@ -18,6 +20,7 @@ from src.infrastructure.persistence.csv_problem_loader import CsvProblemLoader
 from src.infrastructure.persistence.csv_results_exporter import CsvResultsExporter
 from src.infrastructure.persistence.json_problem_loader import JsonProblemLoader
 from src.infrastructure.persistence.pdf_report_generator import PdfReportGenerator
+from src.infrastructure.persistence.xlsx_problem_loader import XlsxProblemLoader
 from src.infrastructure.plotting.feasible_region_plotter import (
     MatplotlibFeasibleRegionPlotter,
 )
@@ -27,6 +30,9 @@ from src.presentation.main_window import MainWindow
 
 
 def build_app() -> MainWindow:
+    ctk.set_appearance_mode("system")
+    ctk.set_default_color_theme("blue")
+
     # Dominio
     feasibility = FeasibilityChecker()
     solver = OptimalSolver(
@@ -39,13 +45,14 @@ def build_app() -> MainWindow:
     plotter = MatplotlibFeasibleRegionPlotter()
     json_loader = JsonProblemLoader()
     csv_loader = CsvProblemLoader()
+    xlsx_loader = XlsxProblemLoader()
     csv_exporter = CsvResultsExporter()
     pdf_generator = PdfReportGenerator(plotter)
     sample_catalog = JsonSampleCatalog()
 
     # Casos de uso
     solve_uc = SolveLPProblemUseCase(solver)
-    load_file_uc = LoadProblemFromFileUseCase(loaders=[json_loader, csv_loader])
+    load_file_uc = LoadProblemFromFileUseCase(loaders=[json_loader, csv_loader, xlsx_loader])
     load_sample_uc = LoadSampleProblemUseCase(sample_catalog)
     export_uc = ExportResultsUseCase(
         figure_exporter=plotter,
@@ -61,6 +68,7 @@ def build_app() -> MainWindow:
         export_uc=export_uc,
         plotter=plotter,
         json_loader=json_loader,
+        xlsx_loader=xlsx_loader,
     )
     return MainWindow(controller)
 

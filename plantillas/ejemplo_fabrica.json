@@ -1,0 +1,13 @@
+{
+  "name": "Fabrica de muebles",
+  "objective": {
+    "type": "max",
+    "c1": 3,
+    "c2": 5
+  },
+  "constraints": [
+    {"a1": 1, "a2": 0, "op": "<=", "b": 4,  "label": "Planta 1: x <= 4"},
+    {"a1": 0, "a2": 2, "op": "<=", "b": 12, "label": "Planta 2: 2y <= 12"},
+    {"a1": 3, "a2": 2, "op": "<=", "b": 18, "label": "Planta 3: 3x + 2y <= 18"}
+  ]
+}

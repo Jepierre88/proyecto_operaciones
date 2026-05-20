@@ -1,0 +1,12 @@
+{
+  "name": "Cambiar por el nombre del problema",
+  "objective": {
+    "type": "max",
+    "c1": 0,
+    "c2": 0
+  },
+  "constraints": [
+    {"a1": 0, "a2": 0, "op": "<=", "b": 0, "label": "Restriccion 1"},
+    {"a1": 0, "a2": 0, "op": "<=", "b": 0, "label": "Restriccion 2"}
+  ]
+}
