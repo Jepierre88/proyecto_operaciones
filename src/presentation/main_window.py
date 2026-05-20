@@ -122,6 +122,18 @@ class MainWindow(ctk.CTk):
             height=40,
         ).pack(side="left", expand=True, fill="x", padx=(4, 0))
 
+        # Boton de explicacion (oculto hasta que se resuelva)
+        self._explanation_btn = ctk.CTkButton(
+            left,
+            text="Explicacion paso a paso",
+            command=self._controller.on_explain,
+            fg_color="#6a1b9a",
+            hover_color="#4a148c",
+            height=44,
+            font=ctk.CTkFont(size=14, weight="bold"),
+        )
+        # No se hace .grid() todavia: se muestra desde show_explanation_button()
+
         # --- DERECHA: salida ---
         right = ctk.CTkFrame(body, fg_color="transparent")
         right.grid(row=0, column=1, sticky="nsew", padx=(8, 0))
@@ -213,6 +225,7 @@ class MainWindow(ctk.CTk):
         self.objective_form.set_values(request.objective_type, request.c1, request.c2)
         self.constraints_list.set_from_requests(request.constraints)
         self.results_panel.clear()
+        self.hide_explanation_button()
         self.title(f"Programacion Lineal - {self._current_problem_name}")
 
     def reset(self) -> None:
@@ -220,4 +233,15 @@ class MainWindow(ctk.CTk):
         self.objective_form.set_values("max", 1, 1)
         self.constraints_list.clear()
         self.results_panel.clear()
+        self.hide_explanation_button()
         self.title("Programacion Lineal - Metodo Grafico (Linea A)")
+
+    # --- Boton de explicacion ---
+
+    def show_explanation_button(self) -> None:
+        if not self._explanation_btn.winfo_ismapped():
+            self._explanation_btn.grid(row=3, column=0, sticky="ew", pady=(10, 0))
+
+    def hide_explanation_button(self) -> None:
+        if self._explanation_btn.winfo_ismapped():
+            self._explanation_btn.grid_remove()

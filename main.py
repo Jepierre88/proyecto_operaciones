@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import customtkinter as ctk
 
+from src.application.services.solution_explainer import SolutionExplainer
 from src.application.use_cases.export_results import ExportResultsUseCase
 from src.application.use_cases.load_problem_from_file import LoadProblemFromFileUseCase
 from src.application.use_cases.load_sample_problem import LoadSampleProblemUseCase
@@ -59,6 +60,7 @@ def build_app() -> MainWindow:
         table_exporter=csv_exporter,
         report_exporter=pdf_generator,
     )
+    explainer = SolutionExplainer()
 
     # Presentacion
     controller = MainController(
@@ -69,6 +71,7 @@ def build_app() -> MainWindow:
         plotter=plotter,
         json_loader=json_loader,
         xlsx_loader=xlsx_loader,
+        explainer=explainer,
     )
     return MainWindow(controller)
 

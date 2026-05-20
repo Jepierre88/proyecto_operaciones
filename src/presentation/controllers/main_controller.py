@@ -7,6 +7,7 @@ from tkinter import filedialog, messagebox
 
 from src.application.dto.problem_request import ConstraintRequest, ProblemRequest
 from src.application.mappers.problem_mapper import ProblemValidationError
+from src.application.services.solution_explainer import SolutionExplainer
 from src.application.use_cases.export_results import ExportResultsUseCase
 from src.application.use_cases.load_problem_from_file import LoadProblemFromFileUseCase
 from src.application.use_cases.load_sample_problem import LoadSampleProblemUseCase
@@ -16,6 +17,7 @@ from src.infrastructure.persistence.xlsx_problem_loader import XlsxProblemLoader
 from src.infrastructure.plotting.feasible_region_plotter import (
     MatplotlibFeasibleRegionPlotter,
 )
+from src.presentation.widgets.explanation_dialog import ExplanationDialog
 
 
 class MainController:
@@ -28,6 +30,7 @@ class MainController:
         plotter: MatplotlibFeasibleRegionPlotter,
         json_loader: JsonProblemLoader,
         xlsx_loader: XlsxProblemLoader,
+        explainer: SolutionExplainer,
     ) -> None:
         self._solve = solve_uc
         self._load_file = load_file_uc
@@ -36,6 +39,7 @@ class MainController:
         self._plotter = plotter
         self._json_loader = json_loader
         self._xlsx_loader = xlsx_loader
+        self._explainer = explainer
         self._last_result: SolveResult | None = None
         self._view = None  # se inyecta despues
 
@@ -62,13 +66,23 @@ class MainController:
         figure = self._plotter.build_figure(result.problem, result.solution)
         self._view.plot_canvas.render(figure)
         self._view.results_panel.show(result.response)
+        self._view.show_explanation_button()
         self._view.status_bar.info(
             f"Resuelto: {result.response.status_description}."
         )
 
+    def on_explain(self) -> None:
+        if self._last_result is None:
+            return
+        steps = self._explainer.explain(
+            self._last_result.problem, self._last_result.solution
+        )
+        ExplanationDialog(self._view, steps)
+
     def on_clear(self) -> None:
         self._view.reset()
         self._last_result = None
+        self._view.hide_explanation_button()
         self._view.status_bar.info("Formulario limpiado.")
 
     def on_load_file(self) -> None:
