@@ -1,0 +1,23 @@
+INVESTIGACIÓN DE OPERACIONES
+CONSIGNA DE TRABAJO FINAL
+LABORATORIO DE OPTIMIZACIÓN Y DESARROLLO OPERATIVO
+
+1. Objetivo del Proyecto
+El estudiante deberá demostrar el dominio teórico y práctico de una de las técnicas de optimización abordadas durante el curso, mediante el diseño e implementación de un aplicativo semiautomatizado. El propósito es que el futuro ingeniero no solo resuelva el modelo, sino que cree una herramienta funcional que facilite la toma de decisiones basada en datos cuantitativos.
+2. Alcance y Temáticas
+Cada equipo (o estudiante) deberá seleccionar una de las siguientes líneas de trabajo:
+* Línea A: Programación Lineal y Método Gráfico. Desarrollo de una herramienta que permita visualizar la región factible, identificar vértices y encontrar la solución óptima para problemas de dos variables.
+* Línea B: Algoritmos de Transporte. Implementación de una herramienta que compare y resuelva modelos de distribución utilizando los tres algoritmos vistos (Costo Mínimo, Esquina Noroeste y Aproximación de Vogel).
+* Línea C: Teoría de Colas (Sistemas de Espera). Creación de un simulador o calculador de parámetros de desempeño () para modelos específicos (ej. M/M/1 o M/M/s), permitiendo el análisis de costos de servicio vs. costos de espera.
+3. Requisitos del Aplicativo
+El entregable debe cumplir con las siguientes características técnicas:
+* Interfaz de Usuario (UI): Entrada de datos clara (parámetros, restricciones, costos o tasas).
+* Motor de Cálculo: Procesamiento lógico de la técnica seleccionada.
+* Salida de Resultados: Visualización de la solución óptima o los indicadores de desempeño de forma legible.
+* Semiautomatización: El usuario debe poder cambiar los datos de entrada y obtener nuevos resultados sin necesidad de modificar el código o las fórmulas base.
+Nota: Pueden utilizar lenguajes de programación (Python, Java, C++), herramientas de análisis de datos o entornos de hojas de cálculo avanzadas (Excel con VBA/Macros), siempre que se garantice la usabilidad.
+4. Entregables
+1. Informe Técnico: Documento breve que describa el modelo matemático base, la lógica de programación utilizada y un caso de prueba real donde se validen los resultados (pantallazos).
+2. Sustentación: Demostración del funcionamiento de la herramienta mediante un video corto explicativo. El video deberá contener una duración máxima de 7 minutos, todos los integrantes de cada grupo deberán participar en el video. Deberán entregar el enlace del video a modo de video oculto en Youtube.
+5. Criterios de Evaluación
+La evaluación se regirá por la rúbrica adjunta, centrada en los siguientes pilares: Precisión de los resultados matemáticos, calidad y robustez del desarrollo técnico (software/herramienta) y capacidad de análisis y conclusiones derivadas del uso del aplicativo.
