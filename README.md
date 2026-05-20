@@ -20,7 +20,7 @@ src/
 │   ├── persistence/     <- JsonProblemLoader, CsvProblemLoader, CsvResultsExporter, PdfReportGenerator
 │   ├── plotting/        <- MatplotlibFeasibleRegionPlotter
 │   └── samples/         <- catalog.json + JsonSampleCatalog (problemas precargados)
-└── presentation/        <- UI Tkinter
+└── presentation/        <- UI CustomTkinter (moderna, light/dark/system)
     ├── widgets/         <- ObjectiveForm, ConstraintRow, ConstraintsList, PlotCanvas, ResultsPanel, StatusBar
     ├── controllers/     <- MainController
     └── main_window.py
@@ -66,6 +66,8 @@ pytest tests/ -v
 ```
 
 ## Como usar la herramienta
+
+> La interfaz usa **CustomTkinter** (look moderno, esquinas redondeadas, dark mode). Cambia entre claro/oscuro/sistema con el dropdown "Tema" en la barra superior.
 
 1. Al abrir la app se carga por defecto el **problema de la fabrica** (`Max Z = 3x + 5y`).
 2. **Funcion objetivo**: elige Max/Min y escribe los coeficientes `c1` (de x) y `c2` (de y).
