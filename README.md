@@ -116,9 +116,3 @@ objective,max,3,5
 constraint,1,0,<=,4
 constraint,3,2,<=,18
 ```
-
-## Integrantes (rellenar)
-
-- Nombre Apellido — rol
-- Nombre Apellido — rol
-- Nombre Apellido — rol
